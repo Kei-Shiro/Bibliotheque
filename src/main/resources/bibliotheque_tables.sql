@@ -2,6 +2,7 @@
 -- Base de données MySQL
 
 -- Création de la base de données
+DROP DATABASE IF EXISTS bibliotheque_db;
 CREATE DATABASE IF NOT EXISTS bibliotheque_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE bibliotheque_db;
 
@@ -144,6 +145,17 @@ CREATE TABLE suspension_emprunt (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (personne_id) REFERENCES personne(id),
     FOREIGN KEY (penalite_id) REFERENCES penalite(id)
+);
+
+-- Table des logs d'audit
+CREATE TABLE audit_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    action_type VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    timestamp DATETIME NOT NULL,
+    user_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Index pour optimiser les performances
