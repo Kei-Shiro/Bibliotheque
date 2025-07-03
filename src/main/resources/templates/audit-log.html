@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit et Historique</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Audit et Historique</h1>
+
+    <h2>Logs d'Audit</h2>
+    <table id="audit-log-table">
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>Action</th>
+                <th>Date</th>
+                <th>Détails</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les logs d'audit seront insérés ici dynamiquement -->
+        </tbody>
+    </table>
+
+    <h2>Historique des Actions</h2>
+    <table id="action-history-table">
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>Type d'Action</th>
+                <th>Date</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- L'historique des actions sera inséré ici dynamiquement -->
+        </tbody>
+    </table>
+
+    <script src="/static/audit-log.js"></script>
+</body>
+</html>
