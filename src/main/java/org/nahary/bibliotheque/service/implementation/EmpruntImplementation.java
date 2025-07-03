@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,12 @@ public class EmpruntImplementation implements EmpruntService {
             throw new IllegalStateException("La limite d'emprunts pour cette personne a été atteinte.");
         }
 
+        // Vérifier si la durée maximale d'emprunt est respectée
+        int dureeMaximale = emprunt.getPersonne().getTypePersonne().getDureeEmpruntJours();
+        if (emprunt.getDateRetourPrevue().isAfter(emprunt.getDateEmprunt().plusDays(dureeMaximale))) {
+            throw new IllegalStateException("La durée maximale d'emprunt pour cette personne a été dépassée.");
+        }
+
         // Réduire le nombre d'exemplaires disponibles du livre
         emprunt.getLivre().setExemplairesDisponibles(emprunt.getLivre().getExemplairesDisponibles() - 1);
 
@@ -71,6 +78,16 @@ public class EmpruntImplementation implements EmpruntService {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    public void verifierRetards() {
+        List<Emprunt> empruntsEnCours = empruntRepository.findByStatut(Emprunt.Statut.EN_COURS);
+        for (Emprunt emprunt : empruntsEnCours) {
+            if (emprunt.getDateRetourPrevue().isBefore(LocalDate.now())) {
+                emprunt.setStatut(Emprunt.Statut.EN_RETARD);
+                empruntRepository.save(emprunt);
+            }
         }
     }
 }
