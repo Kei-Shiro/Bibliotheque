@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Abonnements</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Gestion des Abonnements</h1>
+
+    <h2>Liste des Abonnements</h2>
+    <table id="abonnements-table">
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>Type d'Abonnement</th>
+                <th>Date de Début</th>
+                <th>Date de Fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les abonnements seront insérés ici dynamiquement -->
+        </tbody>
+    </table>
+
+    <h2>Ajouter / Modifier un Abonnement</h2>
+    <form id="abonnement-form">
+        <label for="utilisateur">Utilisateur :</label>
+        <input type="text" id="utilisateur" name="utilisateur" required>
+
+        <label for="type">Type d'Abonnement :</label>
+        <input type="text" id="type" name="type" required>
+
+        <label for="date-debut">Date de Début :</label>
+        <input type="date" id="date-debut" name="date-debut" required>
+
+        <label for="date-fin">Date de Fin :</label>
+        <input type="date" id="date-fin" name="date-fin" required>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <script src="/static/abonnements.js"></script>
+</body>
+</html>
