@@ -118,4 +118,24 @@ public class EmpruntImplementation implements EmpruntService {
             return ResponseEntity.notFound().build();
         }
     }
+
+    public void appliquerPenalites() {
+        List<Emprunt> empruntsEnRetard = empruntRepository.findByStatut(Emprunt.Statut.EN_RETARD);
+        for (Emprunt emprunt : empruntsEnRetard) {
+            if (emprunt.getDateRetourEffective() == null || emprunt.getDateRetourEffective().isAfter(emprunt.getDateRetourPrevue())) {
+                long joursDeRetard = emprunt.getDateRetourEffective() != null
+                        ? emprunt.getDateRetourEffective().toEpochDay() - emprunt.getDateRetourPrevue().toEpochDay()
+                        : LocalDate.now().toEpochDay() - emprunt.getDateRetourPrevue().toEpochDay();
+
+                double montantPenalite = joursDeRetard * 2000; // Exemple : 2000 Ar par jour de retard
+
+                // Appliquer la pénalité (logique simplifiée)
+                System.out.println("Pénalité appliquée : " + montantPenalite + " Ar pour " + joursDeRetard + " jour(s) de retard.");
+
+                // Mettre à jour le statut de l'emprunt si nécessaire
+                emprunt.setStatut(Emprunt.Statut.RETOURNE);
+                empruntRepository.save(emprunt);
+            }
+        }
+    }
 }
