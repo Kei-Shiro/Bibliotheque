@@ -90,4 +90,32 @@ public class EmpruntImplementation implements EmpruntService {
             }
         }
     }
+
+    public ResponseEntity<Emprunt> retournerLivre(Long empruntId) {
+        Optional<Emprunt> empruntOptional = empruntRepository.findById(empruntId);
+        if (empruntOptional.isPresent()) {
+            Emprunt emprunt = empruntOptional.get();
+
+            // Vérifier si l'emprunt est en cours
+            if (!emprunt.getStatut().equals(Emprunt.Statut.EN_COURS)) {
+                throw new IllegalStateException("Le livre n'est pas actuellement emprunté.");
+            }
+
+            // Enregistrer la date de retour
+            emprunt.setDateRetourEffective(LocalDate.now());
+
+            // Mettre à jour le statut de l'emprunt
+            emprunt.setStatut(Emprunt.Statut.RETOURNE);
+
+            // Augmenter le nombre d'exemplaires disponibles du livre
+            emprunt.getLivre().setExemplairesDisponibles(emprunt.getLivre().getExemplairesDisponibles() + 1);
+
+            // Sauvegarder les modifications
+            empruntRepository.save(emprunt);
+
+            return ResponseEntity.ok(emprunt);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
