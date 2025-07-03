@@ -12,4 +12,8 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
     long countByPersonneIdAndStatut(Long personneId, Emprunt.Statut statut);
 
     List<Emprunt> findByStatut(Emprunt.Statut statut);
+
+    List<Emprunt> findByPersonneNomContainingIgnoreCase(String nom);
+
+    List<Emprunt> findByPersonneId(Long personneId);
 }
