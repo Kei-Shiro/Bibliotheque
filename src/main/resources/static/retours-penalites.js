@@ -28,16 +28,37 @@ document.addEventListener('DOMContentLoaded', () => {
             penalites.forEach(penalite => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${penalite.id}</td>
-                    <td>${penalite.personne.nom} ${penalite.personne.prenom}</td>
-                    <td>${penalite.typePenalite}</td>
+                    <td>${penalite.utilisateur}</td>
+                    <td>${penalite.type}</td>
                     <td>${penalite.montant}</td>
                     <td>${penalite.statut}</td>
-                    <td>
-                        <button class="view-penalite" data-id="${penalite.id}">Voir</button>
-                    </td>
                 `;
                 penalitesTable.appendChild(row);
             });
         });
+
+    // Gestion des retours
+    const retourForm = document.querySelector('#retour-form');
+    retourForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const retourData = {
+            utilisateur: document.querySelector('#retour-utilisateur').value,
+            livre: document.querySelector('#retour-livre').value,
+            dateRetour: document.querySelector('#retour-date').value,
+        };
+
+        fetch('/api/retours', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(retourData),
+        })
+        .then(response => response.json())
+        .then(() => {
+            alert('Retour enregistré avec succès !');
+            location.reload();
+        });
+    });
 });

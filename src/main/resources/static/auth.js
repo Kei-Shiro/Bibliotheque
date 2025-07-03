@@ -16,14 +16,19 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify(loginData),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Connexion réussie !');
-                window.location.href = '/dashboard';
+        .then(response => {
+            if (response.ok) {
+                return response.json();
             } else {
-                alert('Échec de la connexion : ' + data.message);
+                throw new Error('Échec de la connexion');
             }
+        })
+        .then(() => {
+            alert('Connexion réussie !');
+            window.location.href = '/dashboard';
+        })
+        .catch(error => {
+            alert(error.message);
         });
     });
 
@@ -38,21 +43,26 @@ document.addEventListener('DOMContentLoaded', () => {
             email: document.querySelector('#register-email').value,
         };
 
-        fetch('/api/auth/register', {
+        fetch('/api/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(registerData),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Inscription réussie !');
-                window.location.href = '/login';
+        .then(response => {
+            if (response.ok) {
+                return response.json();
             } else {
-                alert('Échec de l_inscription : ' + data.message);
+                throw new Error('Échec de l\'inscription');
             }
+        })
+        .then(() => {
+            alert('Inscription réussie !');
+            window.location.href = '/login';
+        })
+        .catch(error => {
+            alert(error.message);
         });
     });
 });
